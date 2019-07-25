@@ -142,11 +142,13 @@ plt.ylabel('y1')
 plt.scatter(y_pred[0], y_pred[1])
 plt.show()
 #训练并输出
-times=10000
-lr=10
+#超参数
+times=200000#训练次数
+lr=5#学习率
+mini_batch=128
 for i in range(times):
-    update_network(x,y,lr,100)
-    if i%(times/10)==0:
+    update_network(x,y,lr,mini_batch)
+    if i%(times/20)==0:
         y_pred=network_function(x)[-1]
         print('cost = ',cost(x, y))
         plt.figure(figsize=(5,5))
