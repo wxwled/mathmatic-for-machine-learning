@@ -122,10 +122,12 @@ def update_network(x,y,lr):
     b2 = b2 - lr * J_b2(x,y)
     b3 = b3 - lr * J_b3(x,y)
 
+#训练数据
 x = np.linspace(0,1,200).reshape(1,200)
 y = np.array([np.hstack((np.linspace(0,1,100),np.linspace(0,1,100))),
               np.hstack(((np.cos(2*np.pi*np.linspace(0,1,100))+1)/4,
                          (-1*np.cos(4*np.pi*np.linspace(0,1,100))+3)/4))])
+#网络初始化
 reset_network(n1=10,n2=20)
 #print(network_function(x))
 plt.figure(figsize=(5,5))
@@ -133,26 +135,28 @@ plt.xlabel('y0')
 plt.ylabel('y1')
 plt.scatter(y[0], y[1])
 plt.show()
-
+#初始化输出
+y_pred=network_function(x)[-1]
+print(cost(x, y))
+plt.xlabel('y0')
+plt.ylabel('y1')
+plt.scatter(y_pred[0], y_pred[1])
+plt.show()
+#训练并输出
 times=10000
 lr=15
 for i in range(times):
     update_network(x,y,lr)
     if i%(times/40)==0:
         y_pred=network_function(x)[-1]
-        print(cost(x, y))
+        print('cost = ',cost(x, y))
         plt.figure(figsize=(5,5))
         plt.xlabel('y0')
         plt.ylabel('y1')
         plt.scatter(y_pred[0], y_pred[1])
         plt.show()
 
-#y_pred=network_function(x)[-1]
-#print(cost(x, y))
-#plt.xlabel('y0')
-#plt.ylabel('y1')
-#plt.scatter(y_pred[0], y_pred[1])
-#plt.show()
+
 
 
 
