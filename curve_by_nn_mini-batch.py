@@ -121,17 +121,19 @@ def update_network(x,y,lr,minibatch):
     b2 = b2 - lr * J_b2(u,v)
     b3 = b3 - lr * J_b3(u,v)
 
+n=50
 #训练数据
-x = np.linspace(0,1,200).reshape(1,200)
-y = np.array([np.hstack((np.linspace(0,1,100),np.linspace(0,1,100))),
-              np.hstack(((np.cos(2*np.pi*np.linspace(0,1,100))+1)/4,
-                         (-1*np.cos(4*np.pi*np.linspace(0,1,100))+3)/4))])
+x = np.linspace(0,1,n).reshape(1,n)
+#y的第二段如果不翻转，会出现连笔画问题
+y = np.array([np.hstack((np.linspace(0,1,int(n/2)),1-np.linspace(0,1,int(n/2)))),
+              np.hstack(((np.cos(2*np.pi*np.linspace(0,1,int(n/2)))+1)/4,
+                         (-1*np.cos(4*np.pi*np.linspace(0,1,int(n/2)))+3)/4))])
 #网络初始化
 reset_network(n1=10,n2=20)
 #print(network_function(x))
 plt.figure(figsize=(5,5))
 plt.xlabel('y0')
-plt.ylabel('y1')
+plt.ylabel('y1') 
 plt.scatter(y[0], y[1])
 plt.show()
 #初始化输出
@@ -143,9 +145,9 @@ plt.scatter(y_pred[0], y_pred[1])
 plt.show()
 #训练并输出
 #超参数
-times=200000#训练次数
+times=100000#训练次数
 lr=5#学习率
-mini_batch=128
+mini_batch=int(n*0.8)
 for i in range(times):
     update_network(x,y,lr,mini_batch)
     if i%(times/20)==0:
@@ -158,8 +160,13 @@ for i in range(times):
         plt.show()
 
 
-
-
+test_x=np.linspace(0,1,1000).reshape(1,1000)
+test_y_pred=network_function(test_x)[-1]
+plt.figure(figsize=(5,5))
+plt.xlabel('y0')
+plt.ylabel('y1')
+plt.scatter(test_y_pred[0], test_y_pred[1])
+plt.show()
 
 
 
