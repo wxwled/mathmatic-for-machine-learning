@@ -8,18 +8,18 @@ Created on Mon Jul 29 09:34:06 2019
 import matplotlib.pyplot as plt
 import numpy as np
 
-def f(x,mu,sig):
-    return np.exp(-(x-mu)**2/(2*sig**2))/np.sqrt(2*np.pi)/sig
+def f(x,miu,sig):
+    return np.exp(-(x-miu)**2/(2*sig**2))/np.sqrt(2*np.pi)/sig
 
-def dfdmu(x,mu,sig):
-    return f(x,mu,sig)*(x-mu)/sig**2
+def dfdmiu(x,miu,sig):
+    return f(x,miu,sig)*(x-miu)/sig**2
 
-def dfdsig(x,mu,sig):
-    return f(x,mu,sig)*(((x-mu)/sig)**2-1)/sig
+def dfdsig(x,miu,sig):
+    return f(x,miu,sig)*(((x-miu)/sig)**2-1)/sig
 
 #steepest descent 最速下降法
-def steepest_step(x,y,mu,sig,aggression):
-    J = np.array([-2*(y-f(x,mu,sig))@dfdmu(x,mu,sig),-2*(y-f(x,mu,sig))@dfdsig(x,mu,sig)])
+def steepest_step(x,y,miu,sig,aggression):
+    J = np.array([-2*(y-f(x,miu,sig))@dfdmiu(x,miu,sig),-2*(y-f(x,miu,sig))@dfdsig(x,miu,sig)])
     step = -J*aggression
     return step
 
@@ -39,17 +39,17 @@ for i in range(len(x)-1):
 x=p
 
 #选取初值
-mu=145
+miu=145
 sig=6
-p=np.array([mu])
+p=np.array([miu])
 q=np.array([sig])
 for i in range(1000):
-    dmu,dsig = steepest_step(x,y,mu,sig,50)
-    mu += dmu
+    dmiu,dsig = steepest_step(x,y,miu,sig,200)
+    miu += dmiu
     sig += dsig
-    p = np.append(p,[mu],axis=0)
+    p = np.append(p,[miu],axis=0)
     q = np.append(q,[sig],axis=0)
-ax.plot(x,f(x,mu,sig))
+ax.plot(x,f(x,miu,sig))
 ax.set(xlabel='x',ylabel='y',title='gauss distribution')
 ax.grid()
 
@@ -62,9 +62,9 @@ for i in range(len(x)):
    s+= (f(x[i],U,V)-y[i])**2
 costs=s
 ax2.contour(U,V,costs,100,colors='black',alpha=0.4)
-ax2.scatter(p,q,c='r',alpha=0.8,s=8)
+ax2.scatter(p,q,c=p,alpha=0.8,s=8)
 plt.show()
-print('mu=%.2f sig=%.2f'%(mu,sig))
+print('miu=%.2f sig=%.2f'%(miu,sig))
 
 
 
